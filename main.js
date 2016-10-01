@@ -25,6 +25,9 @@ var mainState = {
     // Updates the background and makes it move up the canvas.
     spaceField.tilePosition.y += backgroundV;
 
+    // Stops ship when you stop pressing the keys.
+    player.body.velocity.x = 0;
+
     // Moves ship left to right.
     if(cursors.left.isDown)
     {
