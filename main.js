@@ -43,6 +43,7 @@ var mainState = {
 
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+    // Creates a group of enemies.
     enemies = game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
@@ -51,6 +52,9 @@ var mainState = {
 
   },
   update: function(){
+    //gives bullets and enemines collied.
+    game.physics.arcade.overlap(bullets, enemies, collisionHandler, null, this);
+
     // Updates the background and makes it move up the canvas.
     spaceField.tilePosition.y += backgroundV;
 
@@ -93,6 +97,7 @@ function fireBullet(){
   }
 };
 
+// Makes the enemies move.
 function createEnemies(){
   for(var y = 0; y < 4; y++){
     for(var x = 0; x <10; x++){
@@ -108,7 +113,12 @@ function createEnemies(){
 }
 
 function descend(){
-  enemies.y += 10;
+  enemies.y -= 100;
+}
+
+function collisionHandler (bullet, enemy){
+  bullet.kill();
+  enemy.kill();
 }
 
 game.state.add('mainState', mainState);
