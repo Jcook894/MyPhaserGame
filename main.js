@@ -52,7 +52,7 @@ var mainState = {
 
   },
   update: function(){
-    //gives bullets and enemines collied.
+    //gives bullets and enemies collision.
     game.physics.arcade.overlap(bullets, enemies, collisionHandler, null, this);
 
     // Updates the background and makes it move up the canvas.
@@ -113,7 +113,7 @@ function createEnemies(){
 }
 
 function descend(){
-  enemies.y -= 100;
+  enemies.y += 10;
 }
 
 function collisionHandler (bullet, enemy){
