@@ -2,17 +2,22 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS,'gameDiv');
 
 var spaceField;
 var backgroundV = 2;
+
 var player;
 var cursors;
+
 var bullets
 var bulletTime = 0; //space between each shot.
 var fireButton;
+
+var enemies;
 
 var mainState = {
   preload: function(){
     game.load.image('starField', 'assets/Starfield.png');
     game.load.image('player', 'assets/ship.png');
     game.load.image('bullets', 'assets/bullet.png');
+    game.load.image('enemy', 'assets/Chibi.png');
 
 
   },
@@ -37,6 +42,13 @@ var mainState = {
     bullets.setAll('checkWorldBounds', true);
 
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    enemies = game.add.group();
+    enemies.enableBody = true;
+    enemies.physicsBodyType = Phaser.Physics.ARCADE;
+
+  createEnemies();
+
   },
   update: function(){
     // Updates the background and makes it move up the canvas.
@@ -80,6 +92,24 @@ function fireBullet(){
     bulletTime = game.time.now + 200;
   }
 };
+
+function createEnemies(){
+  for(var y = 0; y < 4; y++){
+    for(var x = 0; x <10; x++){
+      var enemy = enemies.create(x*48, y*50,'enemy');
+      enemy.anchor.setTo(0.5, 0.5);
+    }
+  }
+  enemies.x = 100;
+  enemies.y = 50;
+
+  var tween = game.add.tween(enemies).to({x:200},2000, Phaser.Easing.Linear.None,true,0,1000,true);
+  tween.onLoop.add(descend, this);
+}
+
+function descend(){
+  enemies.y += 10;
+}
 
 game.state.add('mainState', mainState);
 
