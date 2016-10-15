@@ -12,6 +12,10 @@ var fireButton;
 
 var enemies;
 
+var score = 0;
+var scoreText;
+var winText;
+
 var mainState = {
   preload: function(){
     game.load.image('starField', 'assets/Starfield.png');
@@ -50,6 +54,9 @@ var mainState = {
 
   createEnemies();
 
+  scoreText = game.add.text(0, 550, "Player Score: ", {font:'32px Arial', fill:'#fff'});
+  winText = game.add.text(game.world.centerX, game.world.centerY, "You Win!!!", {font:'32px Arial', fill:'#fff'});
+  winText.visible = false;
   },
   update: function(){
     //gives bullets and enemies collision.
@@ -76,6 +83,13 @@ var mainState = {
     if(fireButton.isDown)
     {
       fireBullet();
+    }
+
+    scoreText.text = "Score: " + score;
+
+    if(score === 4000){
+      winText.visible = true;
+      scoreText.visible = false;
     }
   },
 
@@ -119,6 +133,8 @@ function descend(){
 function collisionHandler (bullet, enemy){
   bullet.kill();
   enemy.kill();
+  score += 100;
+
 }
 
 game.state.add('mainState', mainState);
