@@ -11,6 +11,8 @@ var bulletTime = 0; //space between each shot.
 var fireButton;
 
 var enemies;
+var enemyBullet;
+
 
 var score = 0;
 var scoreText;
@@ -39,11 +41,22 @@ var mainState = {
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-    bullets.createMultiple(30,'bullets');
-    bullets.setAll('anchor.x', 0);
-    bullets.setAll('anchor.y', 1);
+    bullets.createMultiple(50,'bullets');
+    bullets.setAll('anchor.x', -0.5);
+    bullets.setAll('anchor.y', 0);
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
+
+
+    enemyBullets = game.add.group();
+    enemyBullets.enableBody = true;
+    enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    enemyBullets.createMultiple(50,'bullets');
+    enemyBullets.setAll('anchor.x', -0.5);
+    enemyBullets.setAll('anchor.y', 0);
+    enemyBullets.setAll('outOfBoundsKill', true);
+    enemyBullets.setAll('checkWorldBounds', true);
+
 
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -84,6 +97,9 @@ var mainState = {
     {
       fireBullet();
     }
+    if(game.time.now > firingTime){
+      enemyFire();
+    }
 
     scoreText.text = "Score: " + score;
 
@@ -107,7 +123,7 @@ function fireBullet(){
   {
     bullet.reset(player.x,player.y);
     bullet.body.velocity.y = -350;
-    bulletTime = game.time.now + 200;
+    bulletTime = game.time.now + 80;
   }
 };
 
@@ -134,6 +150,11 @@ function collisionHandler (bullet, enemy){
   bullet.kill();
   enemy.kill();
   score += 100;
+
+}
+
+function enemyFire(){
+
 
 }
 
