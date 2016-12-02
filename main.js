@@ -12,6 +12,7 @@ var fireButton;
 
 var enemies;
 var enemyBullet;
+var livingEnemies = [];
 
 
 var score = 0;
@@ -97,7 +98,7 @@ var mainState = {
     {
       fireBullet();
     }
-    if(game.time.now > firingTime){
+    if(game.time.now > bulletTime){
       enemyFire();
     }
 
@@ -153,7 +154,27 @@ function collisionHandler (bullet, enemy){
 
 }
 
+// Gives the enemies the functionality to fire back.
 function enemyFire(){
+  enemyBullet = enemyBullets.getFirstExists(false);
+
+  livingEnemies.length = 0;
+
+  enemies.forEachAlive(function(enemy){
+
+    livingEnemies.push(enemy);
+  });
+
+  if(enemyBullet && livingEnemies.length > 0){
+
+    var random = game.rnd.integerInRange(0, livingEnemies.length-1);
+
+    //selects a random shooter thats still alive.
+    var shooter = livingEnemies[random];
+    enemyBullet.reset(shooter.body.x, shooter.body.y);
+
+    game.physics.arcade.moveToObject(enemyBullet, player, 120);
+  }
 
 
 }
